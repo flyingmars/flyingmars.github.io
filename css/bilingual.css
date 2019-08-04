@@ -1,0 +1,11 @@
+.article-bil-column {
+  display: inline;
+  float: left;
+  width: calc(50% - 10px) /* 每欄各佔寬 50%， 邊界預留 10px 空白 */;
+}
+.article-bil-column.bil-first-column {
+  padding: 0 10px 0 0;
+}
+.article-bil-column.bil-second-column {
+  padding: 0 0 0 10px;
+}

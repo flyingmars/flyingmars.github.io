@@ -1,0 +1,667 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-TW">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>在 VM 上裝 WRF | Mars</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Mars">
+    
+
+    
+    <meta name="description" content="WRF 模式是大氣界中常被使用的模式，但其相依的公用程式、軟體數量相當的多，因此在路徑及環境變數的設定上，安裝上會經歷許多的試誤的過程，在此記錄一下自己試過，可能可以安裝完整的過程。本文主要使用 Virtual Box 上的 Ubuntu 做為基礎，在上面安裝 WRF 模式，如果你使用的是其它的環境，請依照環境調整適合的參數。 安裝 Ubuntu先安裝 Ubuntu 最新版後，鍵入下列指令並輸入密">
+<meta name="keywords" content="Linux,WRF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 VM 上裝 WRF">
+<meta property="og:url" content="https://flyingmars.github.io/2018/03/01/wrf-on-linux/index.html">
+<meta property="og:site_name" content="Mars">
+<meta property="og:description" content="WRF 模式是大氣界中常被使用的模式，但其相依的公用程式、軟體數量相當的多，因此在路徑及環境變數的設定上，安裝上會經歷許多的試誤的過程，在此記錄一下自己試過，可能可以安裝完整的過程。本文主要使用 Virtual Box 上的 Ubuntu 做為基礎，在上面安裝 WRF 模式，如果你使用的是其它的環境，請依照環境調整適合的參數。 安裝 Ubuntu先安裝 Ubuntu 最新版後，鍵入下列指令並輸入密">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:updated_time" content="2019-08-04T03:12:13.150Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在 VM 上裝 WRF">
+<meta name="twitter:description" content="WRF 模式是大氣界中常被使用的模式，但其相依的公用程式、軟體數量相當的多，因此在路徑及環境變數的設定上，安裝上會經歷許多的試誤的過程，在此記錄一下自己試過，可能可以安裝完整的過程。本文主要使用 Virtual Box 上的 Ubuntu 做為基礎，在上面安裝 WRF 模式，如果你使用的是其它的環境，請依照環境調整適合的參數。 安裝 Ubuntu先安裝 Ubuntu 最新版後，鍵入下列指令並輸入密">
+
+    
+    <link rel="alternative" href="/atom.xml" title="Mars" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-9352604261981447",
+        enable_page_level_ads: true
+      });
+    </script>
+</head>
+</html>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Mars">Mars</a></h1>
+				<h2 class="blog-motto">尋找能傳遞想法的文字</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="選單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/portfolio">Portfolio</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜尋" />
+						<input type="hidden" name="q" value="site:flyingmars.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/01/wrf-on-linux/" title="在 VM 上裝 WRF" itemprop="url">在 VM 上裝 WRF</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Mars" target="_blank" itemprop="author">Mars</a>
+		
+    <span id="busuanzi_container_page_pv">
+      ／總閱讀 <span id="busuanzi_value_page_pv"></span> 次
+    </span>
+  <p class="article-time">
+    <time datetime="2018-03-01T06:16:45.000Z" itemprop="datePublished"> 發表於 2018-03-01</time>
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#安裝-Ubuntu"><span class="toc-number">1.</span> <span class="toc-text">安裝 Ubuntu</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安裝必要的軟體"><span class="toc-number">2.</span> <span class="toc-text">安裝必要的軟體</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-Zlib"><span class="toc-number">2.1.</span> <span class="toc-text">安裝 Zlib</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-HDF5"><span class="toc-number">2.2.</span> <span class="toc-text">安裝 HDF5</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-NETCDF"><span class="toc-number">2.3.</span> <span class="toc-text">安裝 NETCDF</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-NETCDF-FORTRAN"><span class="toc-number">2.4.</span> <span class="toc-text">安裝 NETCDF-FORTRAN</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-NETCDF-CXX"><span class="toc-number">2.5.</span> <span class="toc-text">安裝 NETCDF-CXX</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WRF-全地形資料"><span class="toc-number">2.6.</span> <span class="toc-text">WRF 全地形資料</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WRF-預處理程式"><span class="toc-number">2.7.</span> <span class="toc-text">WRF 預處理程式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WRF-3-9主程式"><span class="toc-number">2.8.</span> <span class="toc-text">WRF 3.9主程式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-RIP4"><span class="toc-number">2.9.</span> <span class="toc-text">安裝 RIP4</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#以下尚未完成"><span class="toc-number"></span> <span class="toc-text">以下尚未完成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#WRF-Chem"><span class="toc-number">0.1.</span> <span class="toc-text">WRF-Chem</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#未整理備忘"><span class="toc-number"></span> <span class="toc-text">未整理備忘</span></a>
+		
+		</div>
+		
+		<p>WRF 模式是大氣界中常被使用的模式，但其相依的公用程式、軟體數量相當的多，因此在路徑及環境變數的設定上，安裝上會經歷許多的試誤的過程，在此記錄一下自己試過，可能可以安裝完整的過程。本文主要使用 Virtual Box 上的 Ubuntu 做為基礎，在上面安裝 WRF 模式，如果你使用的是其它的環境，請依照環境調整適合的參數。</p>
+<h3 id="安裝-Ubuntu"><a href="#安裝-Ubuntu" class="headerlink" title="安裝 Ubuntu"></a>安裝 Ubuntu</h3><p>先安裝 Ubuntu 最新版後，鍵入下列指令並輸入密碼</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -i</span><br></pre></td></tr></table></figure>
+<h3 id="安裝必要的軟體"><a href="#安裝必要的軟體" class="headerlink" title="安裝必要的軟體"></a>安裝必要的軟體</h3><p>鍵入以下指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get upgrade</span><br><span class="line">apt-get install m4</span><br><span class="line">apt-get install gfortran</span><br><span class="line">apt-get install csh</span><br><span class="line">apt-get install libmpich-dev</span><br><span class="line">apt-get install zlib1g-dev</span><br><span class="line">apt-get install byacc</span><br><span class="line">apt-get install flex</span><br></pre></td></tr></table></figure>
+<p>接著在指定的位置（本文使用 <code>/WRFMODEL</code> 當做工作目錄，可自行代換）建一個資料夾，並切換到該資料夾。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /WRFMODEL</span><br><span class="line"><span class="built_in">cd</span> /WRFMODEL</span><br></pre></td></tr></table></figure>
+<h4 id="安裝-Zlib"><a href="#安裝-Zlib" class="headerlink" title="安裝 Zlib"></a>安裝 Zlib</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#下載 zlib</span></span><br><span class="line">https://zlib.net/zlib-1.2.11.tar.gz</span><br><span class="line"><span class="comment"># 解壓縮</span></span><br><span class="line">tar -xvf zlib-1.2.11.tar.gz</span><br><span class="line"><span class="comment"># 進入資料夾</span></span><br><span class="line"><span class="built_in">cd</span> zlib-1.2.11</span><br><span class="line"><span class="comment">#指定 zlib 的位置</span></span><br><span class="line">./configure --prefix=/WRFMODEL/library/zlib</span><br><span class="line"><span class="comment">#編譯</span></span><br><span class="line">make</span><br><span class="line"><span class="comment">#測試編譯結果</span></span><br><span class="line">make check</span><br><span class="line"><span class="comment">#移動到指定位置</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>編輯~/.bashrc，加入下面這些變數</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> CPPFLAGS=<span class="string">"-I/WRFMODEL/library/zlib/include"</span></span><br><span class="line"><span class="built_in">export</span> LDFLAGS=<span class="string">"-L/WRFMODEL/library/zlib/lib"</span></span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/WRFMODEL/library/zlib/lib:<span class="variable">$LD_LIBRARY_PATH</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<h4 id="安裝-HDF5"><a href="#安裝-HDF5" class="headerlink" title="安裝 HDF5"></a>安裝 HDF5</h4><p>（此步驟約需30分鐘）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 回到主工作目錄</span></span><br><span class="line"><span class="built_in">cd</span> /WRFMODEL</span><br><span class="line"><span class="comment"># 下載 HDF5</span></span><br><span class="line">wget https://support.hdfgroup.org/ftp/HDF5/current18/src/hdf5-1.8.19.tar.gz</span><br><span class="line"><span class="comment"># 解壓縮</span></span><br><span class="line">tar -xvf hdf5-1.8.19.tar.gz</span><br><span class="line"><span class="comment"># 進入資料夾</span></span><br><span class="line"><span class="built_in">cd</span> hdf5-1.8.19</span><br><span class="line"><span class="comment"># 設定安裝選項</span></span><br><span class="line">./configure --prefix=/WRFMODEL/library/hdf5 --<span class="built_in">enable</span>-fortran --<span class="built_in">enable</span>-cxx</span><br><span class="line"><span class="comment"># 編譯</span></span><br><span class="line">make</span><br><span class="line"><span class="comment"># 檢查編譯檔案</span></span><br><span class="line">$ make check</span><br><span class="line"><span class="comment"># 移動編譯檔案</span></span><br><span class="line">$ make install</span><br><span class="line"><span class="comment"># 檢查 Library 連結狀況</span></span><br><span class="line">$ make check-install</span><br></pre></td></tr></table></figure>
+<p>再次編輯 ~/.bashrc，加入以下變數</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HDF5=/WRFMODEL/library/hdf5</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/WRFMODEL/library/hdf5/lib:<span class="variable">$LD_LIBRARY_PATH</span></span><br></pre></td></tr></table></figure>
+<p>修改以下變數</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> CPPFLAGS=<span class="string">"-I/WRFMODEL/library/hdf5/include -I/WRFMODEL/library/zlib/include"</span></span><br><span class="line"><span class="built_in">export</span> LDFLAGS=<span class="string">"-L/WRFMODEL/library/hdf5/lib -L/WRFMODEL/library/zlib/lib"</span></span><br></pre></td></tr></table></figure>
+<p>鍵入下列指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<h4 id="安裝-NETCDF"><a href="#安裝-NETCDF" class="headerlink" title="安裝 NETCDF"></a>安裝 NETCDF</h4><p>鍵入下列指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 回到主工作目錄</span></span><br><span class="line"><span class="built_in">cd</span> /WRFMODEL</span><br><span class="line"><span class="comment"># 下載 netcdf</span></span><br><span class="line">wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4.4.1.1.tar.gz</span><br><span class="line"><span class="comment"># 解壓縮</span></span><br><span class="line">tar -xvf netcdf-4.4.1.1.tar.gz</span><br><span class="line"><span class="comment"># 進入資料夾</span></span><br><span class="line"><span class="built_in">cd</span> netcdf-4.4.1.1</span><br><span class="line"><span class="comment"># 安裝選項</span></span><br><span class="line">./configure --prefix=/WRFMODEL/library/netcdf</span><br><span class="line"><span class="comment"># 編譯</span></span><br><span class="line">make</span><br><span class="line"><span class="comment"># 檢查編譯結果</span></span><br><span class="line">make check</span><br><span class="line"><span class="comment"># 移動檔案</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>再次編輯 ~/.bashrc，加入以下變數</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> NETCDF=/WRFMODEL/library/netcdf</span><br><span class="line"><span class="built_in">export</span> NETCDF_LIB=/WRFMODEL/library/netcdf/lib</span><br><span class="line"><span class="built_in">export</span> NETCDF_INC=/WRFMODEL/library/netcdf/include</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/WRFMODEL/library/netcdf/lib:<span class="variable">$LD_LIBRARY_PATH</span></span><br></pre></td></tr></table></figure>
+<p>修改以下變數</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> CPPFLAGS=<span class="string">"-I/WRFMODEL/library/netcdf/include -I/WRFMODEL/library/hdf5/include -I/WRFMODEL/library/zlib/include"</span></span><br><span class="line"><span class="built_in">export</span> LDFLAGS=<span class="string">"-L/WRFMODEL/library/netcdf/lib -L/WRFMODEL/library/hdf5/lib -L/WRFMODEL/library/zlib/lib"</span></span><br></pre></td></tr></table></figure>
+<h4 id="安裝-NETCDF-FORTRAN"><a href="#安裝-NETCDF-FORTRAN" class="headerlink" title="安裝 NETCDF-FORTRAN"></a>安裝 NETCDF-FORTRAN</h4><p>鍵入下列指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 回到主工作目錄</span></span><br><span class="line"><span class="built_in">cd</span> /WRFMODEL</span><br><span class="line"><span class="comment"># 下載 netcdf-fortran</span></span><br><span class="line">wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-fortran-4.4.4.tar.gz</span><br><span class="line"><span class="comment"># 解壓縮</span></span><br><span class="line">tar -xvf netcdf-fortran-4.4.4.tar.gz</span><br><span class="line"><span class="comment"># 進入資料夾</span></span><br><span class="line"><span class="built_in">cd</span> netcdf-fortran-4.4.4</span><br><span class="line"><span class="comment"># 安裝選項</span></span><br><span class="line">./configure --prefix=/WRFMODEL/library/netcdf</span><br><span class="line"><span class="comment"># 編譯</span></span><br><span class="line">make</span><br><span class="line"><span class="comment"># 檢查編譯結果</span></span><br><span class="line">make check</span><br><span class="line"><span class="comment"># 移動檔案</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<h4 id="安裝-NETCDF-CXX"><a href="#安裝-NETCDF-CXX" class="headerlink" title="安裝 NETCDF-CXX"></a>安裝 NETCDF-CXX</h4><p>鍵入下列指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 回到主工作目錄</span></span><br><span class="line"><span class="built_in">cd</span> /WRFMODEL</span><br><span class="line"><span class="comment"># 下載 netcdf-cxx</span></span><br><span class="line">wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-cxx-4.2.tar.gz</span><br><span class="line"><span class="comment"># 解壓縮</span></span><br><span class="line">tar -xvf netcdf-cxx-4.2.tar.gz</span><br><span class="line"><span class="comment"># 進入資料夾</span></span><br><span class="line"><span class="built_in">cd</span> netcdf-cxx-4.2</span><br><span class="line"><span class="comment"># 安裝選項</span></span><br><span class="line">./configure --prefix=/WRFMODEL/library/netcdf</span><br><span class="line"><span class="comment"># 編譯</span></span><br><span class="line">make</span><br><span class="line"><span class="comment"># 檢查編譯結果</span></span><br><span class="line">make check</span><br><span class="line"><span class="comment"># 移動檔案</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<h4 id="WRF-全地形資料"><a href="#WRF-全地形資料" class="headerlink" title="WRF 全地形資料"></a>WRF 全地形資料</h4><p>（解壓後約需60GB）（解壓約需一小時）<br>鍵入下列指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 回到主工作目錄</span></span><br><span class="line"><span class="built_in">cd</span> /WRFMODEL</span><br><span class="line"><span class="comment"># 下載地形檔</span></span><br><span class="line">wget http://www2.mmm.ucar.edu/wrf/src/wps_files/geog_complete.tar.bz2</span><br><span class="line"><span class="comment"># 解壓縮</span></span><br><span class="line">tar -xvf geog_complete.tar.bz2</span><br></pre></td></tr></table></figure>
+<h4 id="WRF-預處理程式"><a href="#WRF-預處理程式" class="headerlink" title="WRF 預處理程式"></a>WRF 預處理程式</h4><p>鍵入下列指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 回到主工作目錄</span></span><br><span class="line"><span class="built_in">cd</span> /WRFMODEL</span><br><span class="line"><span class="comment"># 下載預處理程式</span></span><br><span class="line">wget http://www2.mmm.ucar.edu/wrf/src/WPSV3.9.0.1.TAR.gz</span><br><span class="line"><span class="comment"># 解壓縮</span></span><br><span class="line">tar -xvf WPSV3.9.0.1.TAR.gz</span><br><span class="line"><span class="comment"># 進入 WPS 工作目錄</span></span><br><span class="line"><span class="built_in">cd</span> WPS</span><br><span class="line"><span class="comment"># 載入變數表</span></span><br><span class="line">wget http://www2.mmm.ucar.edu/wrf/src/Vtable.GFS_new -O Vtable</span><br></pre></td></tr></table></figure>
+<p>修改 namelist.wps 中的這行： <code>geog_data_path = &#39;/WRFMODEL/geog/&#39;</code><br>之後，鍵入以下指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 設定安裝參數</span></span><br><span class="line">./configure</span><br><span class="line"><span class="comment"># 選 1 之後，編譯</span></span><br><span class="line">./compile</span><br><span class="line"><span class="comment"># 回到主工作目錄</span></span><br><span class="line"><span class="built_in">cd</span> /WRFMODEL</span><br><span class="line"><span class="comment"># 把解壓縮出來的地形檔放在一起</span></span><br><span class="line">mv modis_landuse_20class_30s_with_lakes geog</span><br><span class="line"><span class="comment"># 切換回 WPS 工作目錄</span></span><br><span class="line">./geogrid.exe</span><br></pre></td></tr></table></figure>
+<h4 id="WRF-3-9主程式"><a href="#WRF-3-9主程式" class="headerlink" title="WRF 3.9主程式"></a>WRF 3.9主程式</h4><p>鍵入以下指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 回到工作目錄</span></span><br><span class="line"><span class="built_in">cd</span> /WRFMODEL</span><br><span class="line"><span class="comment"># 下載主程式</span></span><br><span class="line">wget http://www2.mmm.ucar.edu/wrf/src/WRFV3.9.TAR.gz</span><br><span class="line"><span class="comment"># 解壓縮</span></span><br><span class="line">tar -xvf WRFV3.9.TAR.gz</span><br><span class="line"><span class="comment"># 進入主程式目錄</span></span><br><span class="line"><span class="built_in">cd</span> WRFV3</span><br><span class="line"><span class="comment"># 設定參數</span></span><br><span class="line">./configure</span><br><span class="line"><span class="comment"># 選擇 33, 1 之後編譯</span></span><br><span class="line">./compile em_real &amp;&gt; compile.log</span><br></pre></td></tr></table></figure>
+<h4 id="安裝-RIP4"><a href="#安裝-RIP4" class="headerlink" title="安裝 RIP4"></a>安裝 RIP4</h4><p>安裝 RIP4 有些複雜，在此預設上面那些動作都完成了。<br>首先要安裝必要軟體，請鍵入以下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libx11-dev</span><br><span class="line">sudo apt-get install libfreetype6-dev</span><br><span class="line">sudo apt-get install libcairo2-dev</span><br></pre></td></tr></table></figure>
+<p>安裝完成後，先到這邊下載 ncl 的主程式（pre-compiled），一般使用 Ubuntu 來安裝的話可以選擇這個。下載完成之後，解壓縮至 <code>/usr/local/ncl-6.4.0</code> 中，並修改 <code>~/.bashrc</code> 如下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在最下方加入下面兩行</span></span><br><span class="line"><span class="built_in">export</span> NCARG_ROOT=/usr/<span class="built_in">local</span>/ncl-6.4.0</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$NCARG_ROOT</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<p>存好後記得鍵入 <code>source ~/.bashrc</code> 更新。接著在這邊下載 RIP4 ，解壓縮後進到 RIP4 的資料夾中，鍵入以下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br><span class="line"><span class="comment"># 請依照自己的 compiler 選擇正確的選項</span></span><br><span class="line"><span class="comment"># 一般應該是用 3</span></span><br></pre></td></tr></table></figure>
+<p>之後用編輯器打開 <code>configure.rip</code> 之後，修改以下的部份</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 將這一行</span></span><br><span class="line">NETCDFLIB = -L<span class="variable">$&#123;NETCDF&#125;</span>/lib -lnetcdf</span><br><span class="line"><span class="comment"># 改成這一行</span></span><br><span class="line">NETCDFLIB = -L<span class="variable">$&#123;NETCDF&#125;</span>/lib -lnetcdff</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 將這一行</span></span><br><span class="line">NCARGLIBS = -L<span class="variable">$&#123;NCARG_ROOT&#125;</span>/lib -lncarg -lcgm -lncarg_gks -lncarg_c -lX11 -lm</span><br><span class="line"><span class="comment"># 改成這一行</span></span><br><span class="line">NCARGLIBS = -L<span class="variable">$&#123;NCARG_ROOT&#125;</span>/lib -L/usr/<span class="built_in">local</span>/libpng -lncarg -lcgm -lncarg_gks -lncarg_c -lX11 -lm -lcairo -lfreetype</span><br><span class="line"></span><br><span class="line"><span class="comment"># 有變動的部份：</span></span><br><span class="line"><span class="comment"># 請指定到你安裝 libpng 的地方，預設是這裡 -L/usr/local/libpng</span></span><br><span class="line"><span class="comment"># 增加 FLAG : -lcairo -lfreetype</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 將這一行</span></span><br><span class="line">LOCAL_LIBS = -L/usr/X11R6/lib -lX11 -L/usr/lib/gcc/i386-redhat-linux/3.4.6 -lgcc -lg2c</span><br><span class="line"><span class="comment"># 改成這一行</span></span><br><span class="line">LOCAL_LIBS = -L/usr/X11R6/lib -lX11 -L/usr/lib/gcc/i386-redhat-linux/3.4.6 -lgcc -lgfortran</span><br><span class="line"></span><br><span class="line"><span class="comment"># 有變動的部份：</span></span><br><span class="line"><span class="comment"># -lg2c → -lgfortran</span></span><br></pre></td></tr></table></figure>
+<p>最後鍵入 <code>./compile</code> 即可編譯出許多的執行檔了。</p>
+<h1 id="以下尚未完成"><a href="#以下尚未完成" class="headerlink" title="以下尚未完成"></a>以下尚未完成</h1><h4 id="WRF-Chem"><a href="#WRF-Chem" class="headerlink" title="WRF-Chem"></a>WRF-Chem</h4><p>鍵入下列指令（註：記憶體要夠大，否則會編譯不過）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 回到主工作目錄</span></span><br><span class="line"><span class="built_in">cd</span> /WRFMODEL</span><br><span class="line"><span class="comment"># 下載 WRF-CHEM 程式</span></span><br><span class="line">wget http://www2.mmm.ucar.edu/wrf/src/WRFV3-Chem-3.9.1.TAR.gz</span><br><span class="line"><span class="comment"># 解壓縮</span></span><br><span class="line">tar -xvf WRFV3-Chem-3.9.1.TAR.gz</span><br><span class="line"><span class="comment"># 把 WRF-CHEM 移入 WRF</span></span><br><span class="line">mv chem WRFV3</span><br></pre></td></tr></table></figure>
+<p>再次編輯 <code>~/.bashrc</code>，加入以下變數</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span></span><br></pre></td></tr></table></figure>
+<p>修改以下變數</p>
+<h1 id="未整理備忘"><a href="#未整理備忘" class="headerlink" title="未整理備忘"></a>未整理備忘</h1><p>ls –l ../../../WPS/met_em<em><br>ln –s ../../..WPS/met_em</em> .</p>
+<p>JAVA7</p>
+<p>sudo dpkg -P oracle-java7-installer<br>sudo apt-get -f install</p>
+<p>WRF 各文件下載網址</p>
+<p><a href="http://www2.mmm.ucar.edu/wrf/users/download/get_sources.html" target="_blank" rel="noopener">http://www2.mmm.ucar.edu/wrf/users/download/get_sources.html</a></p>
+<p>RIP4 安裝？</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/大氣科學/">大氣科學</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Linux/">Linux</a><a href="/tags/WRF/">WRF</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://flyingmars.github.io/2018/03/01/wrf-on-linux/" data-title="在 VM 上裝 WRF | Mars" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/03/06/language-learning-link/" title="一些語言學習實用連結">
+  <strong>上一篇：</strong><br/>
+  <span>
+  一些語言學習實用連結</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/27/dairy-k-2018-02-27/"  title="슬퍼하고 있어요">
+ <strong>下一篇：</strong><br/> 
+ <span>슬퍼하고 있어요
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+  
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#安裝-Ubuntu"><span class="toc-number">1.</span> <span class="toc-text">安裝 Ubuntu</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安裝必要的軟體"><span class="toc-number">2.</span> <span class="toc-text">安裝必要的軟體</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-Zlib"><span class="toc-number">2.1.</span> <span class="toc-text">安裝 Zlib</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-HDF5"><span class="toc-number">2.2.</span> <span class="toc-text">安裝 HDF5</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-NETCDF"><span class="toc-number">2.3.</span> <span class="toc-text">安裝 NETCDF</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-NETCDF-FORTRAN"><span class="toc-number">2.4.</span> <span class="toc-text">安裝 NETCDF-FORTRAN</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-NETCDF-CXX"><span class="toc-number">2.5.</span> <span class="toc-text">安裝 NETCDF-CXX</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WRF-全地形資料"><span class="toc-number">2.6.</span> <span class="toc-text">WRF 全地形資料</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WRF-預處理程式"><span class="toc-number">2.7.</span> <span class="toc-text">WRF 預處理程式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WRF-3-9主程式"><span class="toc-number">2.8.</span> <span class="toc-text">WRF 3.9主程式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#安裝-RIP4"><span class="toc-number">2.9.</span> <span class="toc-text">安裝 RIP4</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#以下尚未完成"><span class="toc-number"></span> <span class="toc-text">以下尚未完成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#WRF-Chem"><span class="toc-number">0.1.</span> <span class="toc-text">WRF-Chem</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#未整理備忘"><span class="toc-number"></span> <span class="toc-text">未整理備忘</span></a>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/大氣科學/" title="大氣科學">大氣科學<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/歌詞翻譯/" title="歌詞翻譯">歌詞翻譯<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/語言學習/" title="語言學習">語言學習<sup>4</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">連結</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://www.cwb.gov.tw/V7/index.htm" target="_blank" title="隨時看看天氣">中央氣象局</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.typhoon2000.ph/" target="_blank" title="有整理多國的颱風路徑圖">颱風2000</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標籤</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/韓文/" title="韓文">韓文<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/無翻譯/" title="無翻譯">無翻譯<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/WRF/" title="WRF">WRF<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/한국어/" title="한국어">한국어<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/學習筆記/" title="學習筆記">學習筆記<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/日文/" title="日文">日文<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/日本語/" title="日本語">日本語<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/日記/" title="日記">日記<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/有翻譯/" title="有翻譯">有翻譯<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/泰文/" title="泰文">泰文<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ภาษาไทย/" title="ภาษาไทย">ภาษาไทย<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/短文/" title="短文">短文<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/歌詞/" title="歌詞">歌詞<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="flyingmars" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello, I am Mars！ <br/>
+			You can contact me by clicking the button on the right side.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/flyingmars" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		<a href="https://www.facebook.com/kevin.chen.332" target="_blank" class="icon-facebook" title="facebook"></a>
+		
+		
+		<a href="https://www.linkedin.com/in/kevin-chen-23990b10b" target="_blank" class="icon-linkedin" title="linkedin"></a>
+		
+		
+		
+		
+		
+		<a href="mailto:flyingmars+blog@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-nc.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2019 
+		
+		<a href="/about" target="_blank" title="Mars">Mars</a>
+		
+		
+		</p>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'flyingmars';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-114930036-1', 'auto');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
